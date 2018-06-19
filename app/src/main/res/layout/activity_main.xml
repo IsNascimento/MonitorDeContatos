@@ -37,7 +37,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:text="999"
+        android:text="0"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,15 +52,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="999"
+        android:text="0"
         android:textColor="@android:color/black"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/mais"
-        app:layout_constraintStart_toEndOf="@+id/menos"
+        app:layout_constraintEnd_toStartOf="@+id/btnMais"
+        app:layout_constraintStart_toEndOf="@+id/btnMenos"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <ImageButton
-        android:id="@+id/mais"
+        android:id="@+id/btnMais"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
@@ -71,7 +71,7 @@
         app:srcCompat="@drawable/ic_add_circle_black_24dp" />
 
     <ImageButton
-        android:id="@+id/menos"
+        android:id="@+id/btnMenos"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -88,9 +88,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:checked="true"
+        android:checked="false"
         android:textColorLink="@android:color/holo_green_dark"
-        android:thumbTint="@android:color/holo_green_dark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.66"
         app:layout_constraintStart_toEndOf="@+id/textView3"
