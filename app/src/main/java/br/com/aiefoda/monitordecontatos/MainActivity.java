@@ -1,6 +1,7 @@
 package br.com.aiefoda.monitordecontatos;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -31,8 +32,14 @@ public class MainActivity extends AppCompatActivity implements OnRequestPermissi
         preferencias = getSharedPreferences("preferencias", 0);
         monitoramenswitchtoOnOff.setChecked(preferencias.getBoolean("monitoramento", false));
         contatosParaGerarAlerta = preferencias.getInt("alerta", 50);
-
         noAlerta.setText(String.valueOf(contatosParaGerarAlerta));
+
+        Intent it = new Intent( this, Servico.class);
+        if(monitoramenswitchtoOnOff.isChecked()) {
+            startService(it);
+        } else {
+            stopService(it);
+        }
 
         if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] {android.Manifest.permission.READ_CONTACTS}, 0);
@@ -63,6 +70,13 @@ public class MainActivity extends AppCompatActivity implements OnRequestPermissi
             public void onClick(View v) {
                 preferencias.edit().putInt("alerta", contatosParaGerarAlerta).apply();
                 preferencias.edit().putBoolean("monitoramento", monitoramenswitchtoOnOff.isChecked()).apply();
+                Intent it = new Intent(MainActivity.this, Servico.class);
+                if(monitoramenswitchtoOnOff.isChecked()) {
+                    startService(it);
+                } else {
+                    stopService(it);
+                }
+
             }
         });
 
@@ -82,15 +96,6 @@ public class MainActivity extends AppCompatActivity implements OnRequestPermissi
         TextView totalDeContatos = findViewById(R.id.noDeContatos);
         LeitorDeContatos leitorDeContatos = new LeitorDeContatos(this, getLoaderManager());
         totalDeContatos.setText(String.valueOf(leitorDeContatos.contaContatos()));
-    }
-
-    public void startService(View view){
-        Intent it = new Intent( this, Servico.class);
-        startService(it);
-    }
-    public void stopService(View view){
-        Intent it = new Intent(this, Servico.class);
-        stopService(it);
     }
 
 }
