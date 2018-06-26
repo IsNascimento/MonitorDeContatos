@@ -1,14 +1,24 @@
 package br.com.aiefoda.monitordecontatos;
 
+import android.app.Fragment;
+import android.app.LoaderManager;
 import android.app.Service;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Servico extends Service{
+
+    private SharedPreferences preferencias;
 
     public List<Worker> threads = new ArrayList<Worker>();
     @Override
@@ -46,20 +56,29 @@ public class Servico extends Service{
         public int count = 0;
         public int startID;
         public boolean ativo = true;
+        private Handler handler;
 
         public Worker(int startID){
             this.startID = startID;
         }
 
         public void run(){
-            while( ativo && count < 1000 ){
+            handler = new Handler(Looper.getMainLooper());
+            while(ativo){
                 try {
                     Thread.sleep(1000);
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            CursorLoader cursorLoader = new CursorLoader(getApplicationContext(), ContactsContract.Contacts.CONTENT_URI, new String[]{ContactsContract.Contacts._ID},null, null, null);
+                            Cursor cursor = cursorLoader.loadInBackground();
+                            int contatos = cursor.getCount();
+                            Log.i("script","COUNT: "+contatos);
+                        }
+                    });
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                count++;
-                Log.i("script","COUNT: "+count);
             }
             stopSelf(startID);
         }
