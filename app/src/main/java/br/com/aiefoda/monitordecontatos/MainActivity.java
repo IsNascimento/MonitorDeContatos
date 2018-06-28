@@ -7,11 +7,9 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityCompat.OnRequestPermissionsResultCallback;
-import android.support.v4.app.LoaderManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -21,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements OnRequestPermissi
     private int contatosParaGerarAlerta = 0;
     private TextView noAlerta;
     private Switch monitoramenswitchtoOnOff;
-    //public static LoaderManager loader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

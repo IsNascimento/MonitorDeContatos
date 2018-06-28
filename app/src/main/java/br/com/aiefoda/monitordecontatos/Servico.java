@@ -1,7 +1,5 @@
 package br.com.aiefoda.monitordecontatos;
 
-import android.app.Fragment;
-import android.app.LoaderManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -36,11 +34,8 @@ public class Servico extends Service{
         super.onCreate();
         createNotificationChannel();
         preferencias = getSharedPreferences("preferencias", 0);
-        Log.i("script","onCreate");
+        //Log.i("script","onCreate");
     }
-
-
-    /////////////////////////////////////////////////////////////
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -51,11 +46,6 @@ public class Servico extends Service{
             channel.setDescription(description);
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-
-            NotificationChannel canalU = new NotificationChannel(
-                    "canalUrgente", "Canal Urgente", NotificationManager.IMPORTANCE_HIGH);
-            canalU.setDescription("Canal de notificações urgentes");
-            notificationManager.createNotificationChannel(canalU);
         }
     }
 
@@ -77,42 +67,9 @@ public class Servico extends Service{
         gerenciadorDeNotificacoes.notify(1, construtorDeNotificao.build());
     }
 
-    public void cancelarNotificacao() {
-        NotificationManager gerenciadorDeNotificacoes =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        gerenciadorDeNotificacoes.cancel(1);
-    }
-
-    public void atualizarNotificacao() {
-        Intent intent = new Intent(this, Servico.class);
-        PendingIntent intentPendente = PendingIntent.getActivity(this, 0, intent, 0);
-
-        NotificationCompat.Builder construtorDeNotificao =
-                new NotificationCompat.Builder(this, "canal")
-                        .setSmallIcon(R.drawable.ic_report_black_24dp)
-                        .setContentTitle("Notificação")
-                        .setContentText("Texto da notificação atualizado")
-                        .setStyle(new NotificationCompat.InboxStyle()
-                                .setBigContentTitle("Notificação Longa")
-                                .addLine("Linha 1")
-                                .addLine("Linha 2")
-                                .addLine("Linha 3")
-                                .addLine("Linha 4"))
-                        .setContentIntent(intentPendente)
-                        .addAction(R.drawable.ic_report_black_24dp, "IR", intentPendente)
-                        .setAutoCancel(true);
-
-        NotificationManager gerenciadorDeNotificacoes =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        gerenciadorDeNotificacoes.notify(1, construtorDeNotificao.build());
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startID){
-        Log.i("script","onStartCommand");
+        //Log.i("script","onStartCommand");
 
         Worker w = new Worker(startID);
         w.start();
@@ -131,7 +88,6 @@ public class Servico extends Service{
     }
 
     class Worker extends Thread{
-        public int count = 0;
         public int startID;
         public boolean ativo = true;
         private Handler handler;
@@ -151,7 +107,7 @@ public class Servico extends Service{
                             CursorLoader cursorLoader = new CursorLoader(getApplicationContext(), ContactsContract.Contacts.CONTENT_URI, new String[]{ContactsContract.Contacts._ID},null, null, null);
                             Cursor cursor = cursorLoader.loadInBackground();
                             int contatos = cursor.getCount();
-                            Log.i("script","COUNT: "+contatos);
+                            Log.i("script","NContatos: "+contatos);
                             if (contatos == preferencias.getInt("alerta", 50)){
                                 criarNotificacao();
                             }
